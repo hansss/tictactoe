@@ -5,8 +5,8 @@ class Board:
 
     # initializer
     def __init__(self):
-        self.player = 'X' # by default, player is X
-        self.opponent = 'O' # opponent is O
+        self.player = 'X' # player starts as X
+        self.opponent = 'O' 
         self.empty = '_' # empty spaces are denoted by underscores _
         self.size = 3 # default board size 3x3
         self.positions = {} # 2D array of board positions
@@ -21,37 +21,37 @@ class Board:
         (board.player, board.opponent) = (board.opponent, board.player) # switches players' turns
         return board # return updated board
 
-    # algorithmic function. takes in a boolean value, player, which determines
+    # recursive algorithmic function. takes in a boolean value, player, which determines
     # whose turn it is, and checks first to see if the game has been won or tied.
     # Otherwise, it evaluates the possible game states and returns the optimal next 
-    # move for the player.
+    # move for the player in tuple format: (score, position)
     def __minimax(self, player):
         # first, check if game has already been won by the opponent
         if self.won():
             if player:
-                return (-1, None) # assign payoff of -1 for player, since no possible moves remain
-            else:
-                return (+1, None) # assign payoff of +1 for opponent, since it won
+                return (-1, None) # lose: -1, no further moves
+            else: # opponent's turn
+                return (+1, None) # win: +1, no further moves
         # next, check if game has already been tied
         elif self.tied():
-            return (0, None) # if game is tied, assign score 0
+            return (0, None) # tie: 0, no further moves
         # otherwise,
-        elif player:
-            best = (-2, None)
+        elif player: # player's turn
+            best = (-2, None) # initialize the best possible spot to be None with score -2
             for i,j in self.positions:
-                if self.positions[i,j] == self.empty:
-                    val = self.move(i,j).__minimax(not player)[0]
-                    if val > best[0]:
-                        best = (val,(i,j))
+                if self.positions[i,j] == self.empty: # iterate through empty positions
+                    val = self.move(i,j).__minimax(not player)[0] # if player goes here, return score of minimax on the resulting board from POV of opponent
+                    if val > best[0]: # if value > our current best value
+                        best = (val,(i,j)) # replace it and make (i,j) our position of choice (maximize)
             return best
         # otherwise, 
-        else:
-            best = (+2, None)
+        else: # opponent's turn
+            best = (+2, None) # initialize the best possible spot to be None with score +2
             for i,j in self.positions:
-                if self.positions[i,j] == self.empty:
-                    val = self.move(i,j).__minimax(not player)[0]
-                    if val < best[0]:
-                        best = (val,(i,j))
+                if self.positions[i,j] == self.empty: # iterate through empty positions
+                    val = self.move(i,j).__minimax(not player)[0] # if opp goes here, return score of minimax on the resulting board from POV of player
+                    if val < best[0]: # if value < our current best value
+                        best = (val,(i,j)) # replace it and make (i,j) our position of choice (minimize)
             return best
 
     # returns the best possible position for a given player on its turn
@@ -89,7 +89,7 @@ class Board:
         winning_config = []
         for j in range(self.size):
             i = j
-            if self.positions[i.j] == self.opponent:
+            if self.positions[i,j] == self.opponent:
                 winning_config.append((i,j))
             if len(winning_config) == self.size:
                 return winning_config
@@ -97,7 +97,7 @@ class Board:
         winning_config = []
         for j in range(self.size):
             i = self.size - 1 - j
-            if self.positions[i.j] == self.opponent:
+            if self.positions[i,j] == self.opponent:
                 winning_config.append((i,j))
             if len(winning_config) == self.size:
                 return winning_config
@@ -112,3 +112,7 @@ class Board:
                 str += self.positions[i,j] + " "
             str += "\n"
         return str
+
+# class for user interactivity
+class GUI:
+
