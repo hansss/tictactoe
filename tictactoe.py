@@ -1,5 +1,6 @@
 # import libraries here
 
+# Design interface of the board from http://www.leaseweblabs.com/2013/12/python-tictactoe-tk-minimax-ai/ 
 # class in which game takes place
 class Board:
 
@@ -10,6 +11,7 @@ class Board:
         self.empty = '_' # empty spaces are denoted by underscores _
         self.size = 3 # default board size 3x3
         self.positions = {} # 2D array of board positions
+        self.takenPositions = []
         for j in range(self.size):
             for i in range(self.size):
                 self.positions[i,j] = self.empty # initialize all positions to empty
@@ -24,53 +26,30 @@ class Board:
         return str
 
 ################################### HELPER FUNCTIONS ##############################
+#checks to see if the proposed move is a winning move and ends the game if it is
+def winning(self, position):
+    #pseudocode
+    if not Analyze.isTaken:
+        if Analyze.isWon(self, position):
+            return updated board with new position marked 
+             prints "Player __ won the game"
+        else:
+            switch users
+    else:
+        print "This spot is already taken"
+        prompt the user to make a different move
+
 
 # returns the winning configuration, if game has been won by the opponent.
 # otherwise returns None
-def isWon(board):
-    # horizontal
-    for j in range(board.size):
-        winning_config = []
-        for i in range(board.size):
-            if board.positions[i,j] == board.opponent:
-                winning_config.append((i,j))
-            if len(winning_config) == board.size:
-                return winning_config
-    # vertical
-    for i in range(board.size):
-        winning_config = []
-        for j in range(board.size):
-            if board.positions[i,j] == board.opponent:
-                winning_config.append((i,j))
-            if len(winning_config) == board.size:
-                return winning_config
-    # forward diagonal
-    winning_config = []
-    for j in range(board.size):
-        i = j
-        if board.positions[i,j] == board.opponent:
-            winning_config.append((i,j))
-        if len(winning_config) == board.size:
-            return winning_config
-    # backwards diagonal
-    winning_config = []
-    for j in range(board.size):
-        i = board.size - 1 - j
-        if board.positions[i,j] == board.opponent:
-            winning_config.append((i,j))
-        if len(winning_config) == board.size:
-            return winning_config
-    # otherwise, default
-    return None
 
-# returns false if any one position on the board is empty, else true
-# (because if all spots on the board are filled and no one has won, it
-# is a tie)
-def isTied(board):
-    for (i,j) in board.positions:
-        if board.positions[i,j] == board.empty:
-            return False
-    return True
+#checks to see which spots are remaining
+def openPositions(self):
+    op = []
+    #pseudocode
+    for pos in self.positions:
+        if Analyze.isTaken append to recurse over the rest of the list
+        else append op.append(pos)
 
 # recursive algorithm function. takes in a player, which is either 'X' or 'O'
 # and checks first to see if the game has been won or tied. Otherwise, it 
@@ -79,6 +58,40 @@ def isTied(board):
 def nextMove(board, player):
     # TODO
 
+################################### ANALYZER CLASS #############################
+
+#class for methods that analyze a certain move/board configuration
+class Analyze:
+    #checks to see if a position is already taken or not
+    def isTaken(board, position):
+        if position in board.positions then True
+        else False
+
+
+    #checks to see if a given move for a given board configuration is a winning move
+    def isWon(board, position):
+    # horizontal - check to see if this move results in a horizontal streak
+
+    # vertical - check to see if this move results in a vertical streak 
+    
+    # forward diagonal - check to see if this move results in a forward diagonal streak 
+   
+    # backwards diagonal - check to see if this move results in a backwards diagonal streak 
+    
+    # otherwise, default
+    return None
+
+    # returns false if any one position on the board is empty, else true
+    # (because if all spots on the board are filled and no one has won, it
+    # is a tie)
+    def isTied(board, position):
+        for position in board.positions:
+            if board.positions[position] == board.empty:
+                return False
+        return True
+
+
+################################### GUI CLASS #############################
 # class for user interactivity
 class GUI:
 
