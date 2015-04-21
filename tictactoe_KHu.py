@@ -57,14 +57,21 @@ class HelperFunctions(object):
       return None
 
   def won_by(self, board, player):
-    if winningCombo(board, player) is None:
-      False
+    if self.winning_configuration(board, player) is None:
+      return False
     else:
-      True
+      return True
 
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
-  # def isTied(board):
+  def is_tied(self, board):
+    if self.won_by(board, board.player) or self.won_by(board, board.opponent):
+      return False
+    else:
+      for key in board.positions.keys():
+        if self.is_taken(board, str(key)) is False:
+          return False
+      return True
      
   # takes in a board and a player and returns all spaces occupied by that player
   def get_positions_of(self, board, player):
@@ -134,6 +141,9 @@ class Board (object):
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
       print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
       sys.exit(0)
+    if HelperFunctions.is_tied(HelperFunctions(), self):
+      print "The game is tied!"
+      sys.exit(0)
 
     print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
     move = raw_input("Make your move, Player: ")
@@ -168,6 +178,9 @@ class Board (object):
       sys.exit(0)
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
       print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
+      sys.exit(0)
+    if HelperFunctions.is_tied(HelperFunctions(), self):
+      print "The game is tied!"
       sys.exit(0)
 
     print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)

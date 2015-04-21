@@ -57,10 +57,10 @@ class HelperFunctions(object):
       return None
 
   def won_by(self, board, player):
-    if self.winning_configuration(board, player)is None:
-      False
+    if self.winning_configuration(board, player) is None:
+      return False
     else:
-      True
+      return True
 
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
@@ -74,17 +74,31 @@ class HelperFunctions(object):
       return True
      
   # takes in a board and a player and returns all spaces occupied by that player
-  # def getPositionsOf(board, player):
+  def get_positions_of(self, board, player):
+    spaces = []
+    for i in range (1, 10):
+      if board.positions[i] == player: 
+        spaces.append(i)
+    return spaces
 
   # returns "X" if player is "O" and vice versa
-  def get_enemy_of(player):
+  def get_enemy_of(self, player):
     if player == board.player:
       return board.opponent
     else:
       return board.player
 
   # takes in a board and returns all currently empty spaces
-  # def getOpenPositions(board):
+  def get_open_positions(self, board):
+    not_spaces = []
+    for i in range(1, 10):
+      if board.positions[i] != board.player and board.positions[i] != board.opponent:
+        not_spaces.append(int(board.positions[i]))
+    return not_spaces
+
+  # def print_string_list(self, lst):
+  #   for word in range(0, len(lst)):
+  #     sys.stdout.write( "%s " % lst[word])
 
 ################################# BOARD CLASS #################################
 class Board (object):
@@ -131,6 +145,7 @@ class Board (object):
       print "The game is tied!"
       sys.exit(0)
 
+    print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
     move = raw_input("Make your move, Player: ")
     
     #check that the input is a digit
@@ -152,6 +167,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.player
       self.to_string()
+      print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
       self.opponents_move()
 
   # uses Minimax algorithm to make an opponents' move
@@ -167,6 +183,7 @@ class Board (object):
       print "The game is tied!"
       sys.exit(0)
 
+    print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
     move = raw_input("Make your move, Opponent (AI): ")
     
     #check that the input is a digit
@@ -188,6 +205,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.opponent
       self.to_string()
+      print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
       self.players_move()
     
 ################################# SCRIPT #################################    
