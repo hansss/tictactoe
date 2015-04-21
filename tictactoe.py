@@ -6,7 +6,7 @@ import sys
 class HelperFunctions(object):  
 
   # returns True if a spot is empty, otherwise False
-  def not_taken(self, board, move):
+  def is_taken(self, board, move):
     if board.positions[int(move)] != move:
       return True
     else: 
@@ -21,16 +21,16 @@ class HelperFunctions(object):
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
   def isTied(board):
-
      
   # takes in a board and a player and returns all spaces occupied by that player
   def getPositionsOf(board, player):
 
-  # returns ‘X’ if player is ‘O’ and vice versa
+  # returns "X" if player is "O" and vice versa
   def getEnemyOf(player):
     if player == board.player:
       return board.opponent
-    else return board.player
+    else:
+      return board.player
 
   # takes in a board and returns all currently empty spaces
   def getOpenPositions(board):
@@ -41,6 +41,7 @@ class Board (object):
     self.player = "X"
     self.opponent = "O"
     self.space = "*"
+    self.size = 3
     self.positions = {
         1: "1", 
         2: "2",
@@ -70,26 +71,30 @@ class Board (object):
   def players_move(self):
     move = raw_input("Make your move: ")
     
-    #check that the spot is not taken
-    if move.isdigit() and int(move) in self.positions.keys():
-      if HelperFunctions.not_taken(HelperFunctions(),self,move):
+    #check that the input is a digit
+    if move.isdigit() == False:
+      print "You did not enter a valid number.  Please try again."
+      self.players_move()
+    # if input isn't on the board
+    elif int(move) not in self.positions.keys():
+      print "Your input does not exist on the board.  Please try again."
+      self.players_move()
+    # if spot is already taken
+    elif HelperFunctions.is_taken(HelperFunctions(),self,move):
       print "This position is already taken. Choose a different move."
+      self.players_move()
+    elif HelperFunctions.is_valid_input(HelperFunctions(), board, int(move)) == False:
+      print "This is not a valid move. Please choose again."
       self.players_move()
     else:
       print "You entered", move
       self.positions[int(move)] = self.player
       self.to_string()
       self.opponents_move()
-    
-    #check that the input is 1-9
-    #check if this is a winning move
-
-    else:
-      print "This is not a valid move. Please choose again."
-      self.players_move()
 
   # uses Minimax algorithm to make an opponents' move
   def opponents_move(self):
+    print "Opponent moves now"
     
 ################################# SCRIPT #################################    
 

@@ -60,7 +60,12 @@ class HelperFunctions(object):
   # def is_tied(board):
      
   # takes in a board and a player and returns all spaces occupied by that player
-  # def get_positions_of(board, player):
+  def get_positions_of(board, player):
+    spaces = []
+    for i in range (1, 10):
+      if board.positions[i] == board.player: 
+        spaces.append(i)
+    return spaces
 
   # returns "X" if player is "O" and vice versa
   def get_enemy_of(board, player):
@@ -70,7 +75,12 @@ class HelperFunctions(object):
       return board.player
 
   # takes in a board and returns all currently empty spaces
-  # def get_open_positions(board):
+  def get_open_positions(board):
+    not_spaces = []
+    for i in range (1, 10): 
+      if board.positions[i] != board.player:
+        not_spaces.append(board.positions[i])
+    return not_spaces
 
 ################################# BOARD CLASS #################################
 class Board (object):
