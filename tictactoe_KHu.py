@@ -107,19 +107,26 @@ class Board (object):
   def players_move(self):
     move = raw_input("Make your move: ")
     
-    #check that the spot is not taken
-    if move.isdigit() and int(move) in self.positions.keys():
-      if HelperFunctions.is_taken(HelperFunctions(),self,move):
-        print "This position is already taken. Choose a different move."
+    #check that the input is a digit
+    if move.isdigit() == False:
+      print "You did not enter a valid number.  Please try again."
       self.players_move()
-    elif HelperFunctions.is_valid_input(HelperFunctions(), board, move) == False:
+    # if input isn't on the board
+    elif int(move) not in self.positions.keys():
+      print "Your input does not exist on the board.  Please try again."
+      self.players_move()
+    # if spot is already taken
+    elif HelperFunctions.is_taken(HelperFunctions(),self,move):
+      print "This position is already taken. Choose a different move."
+      self.players_move()
+    elif HelperFunctions.is_valid_input(HelperFunctions(), board, int(move)) == False:
       print "This is not a valid move. Please choose again."
       self.players_move()
     else:
       print "You entered", move
       self.positions[int(move)] = self.player
       self.to_string()
-      self.players_move()
+      self.opponents_move()
 
   # uses Minimax algorithm to make an opponents' move
   def opponents_move(self):
