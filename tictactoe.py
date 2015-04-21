@@ -1,18 +1,43 @@
 import sys
 
+################################# HELPER CLASS #################################
+
 #Randomize the first move to decide who plays#
 class HelperFunctions(object):  
-   def not_taken(self, board, move):
-     if board.positions[int(move)] != move:
+
+  # returns True if a spot is empty, otherwise False
+  def not_taken(self, board, move):
+    if board.positions[int(move)] != move:
       return True
-     else: 
+    else: 
       return False  
       
-   #def valid_character
-     
+  #def valid_character
 
+  # takes in a board and a player returns the winning configuration, 
+  # if game has been won by the player, otherwise returns None
+  def isWonBy(board, player):
+
+  # takes in a board and returns True if board has been completely filled 
+  # and no one has won, False otherwise
+  def isTied(board):
+
+     
+  # takes in a board and a player and returns all spaces occupied by that player
+  def getPositionsOf(board, player):
+
+  # returns ‘X’ if player is ‘O’ and vice versa
+  def getEnemyOf(player):
+    if player == board.player:
+      return board.opponent
+    else return board.player
+
+  # takes in a board and returns all currently empty spaces
+  def getOpenPositions(board):
+
+################################# BOARD CLASS #################################
 class Board (object):
-   def __init__(self): 
+  def __init__(self): 
     self.player = "X"
     self.opponent = "O"
     self.space = "*"
@@ -27,33 +52,34 @@ class Board (object):
         8: "8", 
         9: "9"}
        
-        
-   def to_string(self):
-     print " "
-     print "Your Current Board is:"
-     for i in range(1, 4):
+  # returns string representation of Board     
+  def to_string(self):
+    print " "
+    print "Your Current Board is:"
+    for i in range(1, 4):
       sys.stdout.write( "%s " % self.positions[i])
-     print " "
-     for i in range(4, 7):
+    print " "
+    for i in range(4, 7):
       sys.stdout.write( "%s " % self.positions[i])
-     print " "
-     for i in range(7, 10):
+    print " "
+    for i in range(7, 10):
       sys.stdout.write( "%s " % self.positions[i])
-     print " " 
+    print " " 
    
-   def players_move(self):
+  # allows player to make a move
+  def players_move(self):
     move = raw_input("Make your move: ")
     
     #check that the spot is not taken
     if move.isdigit() and int(move) in self.positions.keys():
-     if HelperFunctions.not_taken(HelperFunctions(),self,move):
+      if HelperFunctions.not_taken(HelperFunctions(),self,move):
       print "This position is already taken. Choose a different move."
       self.players_move()
-     else:
+    else:
       print "You entered", move
       self.positions[int(move)] = self.player
       self.to_string()
-      self.players_move()
+      self.opponents_move()
     
     #check that the input is 1-9
     #check if this is a winning move
@@ -61,16 +87,12 @@ class Board (object):
     else:
       print "This is not a valid move. Please choose again."
       self.players_move()
-    
 
-
+  # uses Minimax algorithm to make an opponents' move
+  def opponents_move(self):
     
+################################# SCRIPT #################################    
 
 board = Board()
 board.to_string()
 board.players_move()
-
-
-   
-    
-
