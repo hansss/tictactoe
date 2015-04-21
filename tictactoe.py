@@ -115,9 +115,11 @@ class Board (object):
   def players_move(self):
     # if game has been won, end now
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
-      print "Player has won the game!"
+      print "Player has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.player)
+      sys.exit(0)
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
-      print "Opponent has won the game!"
+      print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
+      sys.exit(0)
 
     move = raw_input("Make your move, Player: ")
     
@@ -146,9 +148,11 @@ class Board (object):
   def opponents_move(self):
     # if game has been won, end now
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
-      print "Player has won the game!"
+      print "Player has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.player)
+      sys.exit(0)
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
-      print "Opponent has won the game!"
+      print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
+      sys.exit(0)
 
     move = raw_input("Make your move, Opponent (AI): ")
     
