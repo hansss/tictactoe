@@ -56,35 +56,38 @@ class HelperFunctions(object):
     else:
       return None
 
-  def won_by(board, player):
-    if winningCombo(board, player)is None:
-      False
-    else:
-      True
-
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
-  # def isTied(board):
+  # def is_tied(self, board):
      
   # takes in a board and a player and returns all spaces occupied by that player
-  # def getPositionsOf(board, player):
+  def get_positions_of(self, board, player):
+    spaces = []
+    for i in range (1, 10):
+      if board.positions[i] == board.player: 
+        spaces.append(i)
+    return spaces
 
   # returns "X" if player is "O" and vice versa
-  def get_enemy_of(player):
+  def get_enemy_of(self, board, player):
     if player == board.player:
       return board.opponent
     else:
       return board.player
 
   # takes in a board and returns all currently empty spaces
-  # def getOpenPositions(board):
+  def get_open_positions(self, board):
+    not_spaces = []
+    for i in range (1, 10): 
+      if board.positions[i] != board.player:
+        not_spaces.append(board.positions[i])
+    return not_spaces
 
 ################################# BOARD CLASS #################################
 class Board (object):
   def __init__(self): 
     self.player = "X"
     self.opponent = "O"
-    self.space = "*"
     self.size = 3
     self.positions = {
         1: "1", 
@@ -115,11 +118,9 @@ class Board (object):
   def players_move(self):
     # if game has been won, end now
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
-      print "Player has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.player)
-      sys.exit(0)
+      print "Player has won the game!"
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
-      print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
-      sys.exit(0)
+      print "Opponent has won the game!"
 
     move = raw_input("Make your move, Player: ")
     
@@ -148,11 +149,9 @@ class Board (object):
   def opponents_move(self):
     # if game has been won, end now
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
-      print "Player has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.player)
-      sys.exit(0)
+      print "Player has won the game!"
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
-      print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
-      sys.exit(0)
+      print "Opponent has won the game!"
 
     move = raw_input("Make your move, Opponent (AI): ")
     
