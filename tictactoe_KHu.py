@@ -70,7 +70,7 @@ class HelperFunctions(object):
   def get_positions_of(self, board, player):
     spaces = []
     for i in range (1, 10):
-      if board.positions[i] == board.player: 
+      if board.positions[i] == player: 
         spaces.append(i)
     return spaces
 
@@ -89,9 +89,9 @@ class HelperFunctions(object):
         not_spaces.append(int(board.positions[i]))
     return not_spaces
 
-  def print_string_list(self, lst):
-    for word in range(0, len(lst)):
-      sys.stdout.write( "%s " % lst[word])
+  # def print_string_list(self, lst):
+  #   for word in range(0, len(lst)):
+  #     sys.stdout.write( "%s " % lst[word])
 
 ################################# BOARD CLASS #################################
 class Board (object):
@@ -135,7 +135,7 @@ class Board (object):
       print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
       sys.exit(0)
 
-    print "The current open positions are: ", HelperFunctions.print_string_list(HelperFunctions(), HelperFunctions.get_open_positions(HelperFunctions(), self))
+    print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
     move = raw_input("Make your move, Player: ")
     
     #check that the input is a digit
@@ -157,7 +157,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.player
       self.to_string()
-      print "Player now occupies spaces: ", HelperFunctions.print_string_list(HelperFunctions(), HelperFunctions.get_positions_of(HelperFunctions(), self, self.player))
+      print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
       self.opponents_move()
 
   # uses Minimax algorithm to make an opponents' move
@@ -170,7 +170,7 @@ class Board (object):
       print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
       sys.exit(0)
 
-    print "The current open positions are: ", HelperFunctions.print_string_list(HelperFunctions(), HelperFunctions.get_open_positions(HelperFunctions(), self))
+    print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
     move = raw_input("Make your move, Opponent (AI): ")
     
     #check that the input is a digit
@@ -192,7 +192,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.opponent
       self.to_string()
-      print "Opponent now occupies spaces: ", HelperFunctions.print_string_list(HelperFunctions(), HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent))
+      print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
       self.players_move()
     
 ################################# SCRIPT #################################    
