@@ -16,7 +16,13 @@ class HelperFunctions(object):
 
   # takes in a board and a player returns the winning configuration, 
   # if game has been won by the player, otherwise returns None
-  def isWonBy(board, player):
+  def winning_configuration(board, player):
+
+  def won_by(board, player):
+    if winningCombo(board, player)is None:
+      False
+    else:
+      True
 
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
