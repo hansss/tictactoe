@@ -25,7 +25,7 @@ class HelperFunctions(object):
 
   # takes in a board and a player returns the winning configuration, 
   # if game has been won by the player, otherwise returns None
-  def winning_configuration(board, player):
+  def winning_configuration(self, board, player):
     # horizontal
     winningCombo = []
     j = 1
@@ -38,36 +38,40 @@ class HelperFunctions(object):
         return winningCombo
       j = j+board.size
     # vertical
-    j = 1
-    while j <= board.size*board.size:
-      if board.positions[j] == board.positions[j+board.size] and board.positions[j+board.size] == board.positions[j+2*board.size]:
-        return [j, j+board.size, j+2*board.size]
-      j = j + board.size
+    if board.positions[1] == player and board.positions[1] == board.positions[4] and board.positions[4] == board.positions[7]:
+      return [1, 4, 7]
+    elif board.positions[2] == player and board.positions[2] == board.positions[5] and board.positions[5] == board.positions[8]:
+      return [2, 5, 8]
+    elif board.positions[3] == player and board.positions[3] == board.positions[6] and board.positions[6] == board.positions[9]:
+      return [3, 6, 9]
     # diagonal
-    if board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
+    if board.positions[1] == player and board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
       return [1, 5, 9]
     # other diagonal
-    elif board.positions[3] == board.positions[5] and board.positions[5] == board.positions[7]:
+    elif board.positions[3] == player and board.positions[3] == board.positions[5] and board.positions[5] == board.positions[7]:
       return [3, 5, 7]
     # if no wins
     else:
       return None
 
-  def won_by(board, player):
-    if winningCombo(board, player)is None:
-      False
+  def won_by(self, board, player):
+    if self.winning_configuration(board, player)is None:
+      return False
     else:
-      True
+      return True
 
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
-  def isTied(board):
-    for key in board.positions.keys:
-      if self.is_taken(self, board, board.positions[key]) and (self.won_by(board, board.player) or self.won_by(board, board.opponent)):
-        True
-      else:
-        False
-     
+  def is_tied(self, board):
+    if self.won_by(board, board.player) or self.won_by(board, board.opponent):
+      return False
+    else:
+      for key in board.positions.keys():
+        if self.is_taken(board, str(key)) is False:
+          return False
+      return True
+
+
   # takes in a board and a player and returns all spaces occupied by that player
   ##def getPositionsOf(board, player):
 
@@ -115,6 +119,12 @@ class Board (object):
    
   # allows player to make a move
   def players_move(self):
+    if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
+      print "Player has won the game!"
+    if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
+      print "Opponent has won the game!"
+    if HelperFunctions.is_tied(HelperFunctions(), self):
+      print "The game is tied!"
     move = raw_input("Make your move: ")
     
     #check that the input is a digit
@@ -140,7 +150,36 @@ class Board (object):
 
   # uses Minimax algorithm to make an opponents' move
   def opponents_move(self):
-    print "Opponent moves now"
+    # if game has been won, end now
+    if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
+      print "Player has won the game!"
+    if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
+      print "Opponent has won the game!"
+    if HelperFunctions.is_tied(HelperFunctions(), self):
+      print "The game is tied!"
+
+    move = raw_input("Make your move, Opponent (AI): ")
+    
+    #check that the input is a digit
+    if move.isdigit() == False:
+      print "You did not enter a valid number.  Please try again."
+      self.opponents_move()
+    # if input isn't on the board
+    elif int(move) not in self.positions.keys():
+      print "Your input does not exist on the board.  Please try again."
+      self.opponents_move()
+    # if spot is already taken
+    elif HelperFunctions.is_taken(HelperFunctions(),self,move):
+      print "This position is already taken. Choose a different move."
+      self.opponents_move()
+    elif HelperFunctions.is_valid_input(HelperFunctions(), board, int(move)) == False:
+      print "This is not a valid move. Please choose again."
+      self.opponents_move()
+    else:
+      print "You entered", move
+      self.positions[int(move)] = self.opponent
+      self.to_string()
+      self.players_move()
     
 ################################# SCRIPT #################################    
 
