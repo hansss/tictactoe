@@ -12,35 +12,81 @@ class HelperFunctions(object):
     else: 
       return False  
       
-  #def valid_character
+  # checks to see if a character is a number between 1 and board.size*board.size
+  # returns True if valid, False otherwise
+  def is_valid_input(self, board, char):
+    if isinstance(char, int):
+      if char < 1:
+        return False
+      elif char > board.size*board.size:
+        return False
+      else:
+        return True
+    else:
+      return False
 
-  # takes in a board and a player returns the winning configuration, 
-  # if game has been won by the player, otherwise returns None
-  def isWonBy(board, player):
+  # takes in a board and a player and returns the winning configuration
+  # if game has been won by that player, otherwise returns None
+  def is_won_by(board, player):
+    # horizontal
+    winningCombo = []
+    j = 1
+    while j <= board.size*board.size:
+      winningCombo = []
+      for i in range(j, j+3):
+        if board.positions[i] == player:
+          winningCombo.append(i)
+      if len(winningCombo) == board.size:
+        return winningCombo
+      j = j+board.size
+    # vertical
+    j = 1
+    while j <= board.size*board.size:
+      if board.positions[j] == board.positions[j+board.size] and board.positions[j+board.size] == board.positions[j+2*board.size]:
+        return [j, j+board.size, j+2*board.size]
+      j = j + board.size
+    # diagonal
+    if board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
+      return [1, 5, 9]
+    # other diagonal
+    elif board.positions[3] == board.positions[5] and board.positions[5] == board.positions[7]:
+      return [3, 5, 7]
+    # if no wins
+    else:
+      return None
 
   # takes in a board and returns True if board has been completely filled 
   # and no one has won, False otherwise
-  def isTied(board):
+  # def is_tied(board):
      
   # takes in a board and a player and returns all spaces occupied by that player
-  def getPositionsOf(board, player):
+  def get_positions_of(board, player):
+    spaces = []
+    for i in range (1, 10):
+      if board.positions[i] == board.player: 
+        spaces.append(i)
+    return spaces
 
   # returns "X" if player is "O" and vice versa
-  def getEnemyOf(player):
+  def get_enemy_of(board, player):
     if player == board.player:
       return board.opponent
     else:
       return board.player
 
   # takes in a board and returns all currently empty spaces
-  def getOpenPositions(board):
+  def get_open_positions(board):
+    not_spaces = []
+    for i in range (1, 10): 
+      if board.positions[i] != board.player:
+        not_spaces.append(board.positions[i])
+    return not_spaces
 
 ################################# BOARD CLASS #################################
 class Board (object):
   def __init__(self): 
     self.player = "X"
     self.opponent = "O"
-    self.space = "*"
     self.size = 3
     self.positions = {
         1: "1", 
