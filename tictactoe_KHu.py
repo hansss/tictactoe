@@ -152,7 +152,7 @@ class Board (object):
       print "Player has won the game!"
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
       print "Opponent has won the game!"
-      
+
     move = raw_input("Make your move, Opponent (AI): ")
     
     #check that the input is a digit
@@ -174,7 +174,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.opponent
       self.to_string()
-      self.opponents_move()
+      self.players_move()
     
 ################################# SCRIPT #################################    
 
