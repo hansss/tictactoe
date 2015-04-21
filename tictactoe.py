@@ -168,6 +168,7 @@ class Board (object):
       self.positions[int(move)] = self.player
       self.to_string()
       print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
+      print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
       self.opponents_move()
 
   # uses Minimax algorithm to make an opponents' move
@@ -205,6 +206,7 @@ class Board (object):
       print "You entered", move
       self.positions[int(move)] = self.opponent
       self.to_string()
+      print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
       print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
       self.players_move()
     
