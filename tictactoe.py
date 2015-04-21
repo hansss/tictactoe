@@ -70,7 +70,7 @@ class HelperFunctions(object):
   # def getPositionsOf(board, player):
 
   # returns "X" if player is "O" and vice versa
-  def getEnemyOf(player):
+  def get_enemy_of(player):
     if player == board.player:
       return board.opponent
     else:
