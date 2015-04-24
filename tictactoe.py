@@ -47,7 +47,7 @@ class HelperFunctions(object):
     elif board.positions[3] == player and board.positions[3] == board.positions[6] and board.positions[6] == board.positions[9]:
       return [3, 6, 9]
     # diagonal
-    if board.positions[1] == player and board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
+    elif board.positions[1] == player and board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
       return [1, 5, 9]
     # other diagonal
     elif board.positions[3] == player and board.positions[3] == board.positions[5] and board.positions[5] == board.positions[7]:
@@ -96,9 +96,41 @@ class HelperFunctions(object):
         not_spaces.append(int(board.positions[i]))
     return not_spaces
 
-  # def print_string_list(self, lst):
-  #   for word in range(0, len(lst)):
-  #     sys.stdout.write( "%s " % lst[word])
+  # returns True if the game has been completed (all spots filled)
+  def is_complete(self, board):
+    if len(self.get_open_positions(board)) == 0:
+      return True
+    else:
+      return False
+
+  # uses Minimax algorithm to return (score, space) representing 
+  # the best possible next move given a board and a player.  
+  def minimax(self, board, player):
+    if self.is_complete(board): # if game is complete,
+      if self.won_by(board, board.opponent):
+        return (-1, None)
+      elif self.is_tied(board):
+        return (0, None)
+      elif self.won_by(board, board.player):
+        return (+1, None)
+    elif player == board.player:
+      best = (-1000, None)
+      for move in self.get_open_positions(board):
+        board.positions[move] = player
+        value = self.minimax(board, self.get_enemy_of(player))[0]
+        board.positions[move] = str(move)
+        if value > best[0]:
+          best = (value, move)
+      return best
+    else:
+      best = (1000, None)
+      for move in self.get_open_positions(board):
+        board.positions[move] = player
+        value = self.minimax(board, self.get_enemy_of(player))[0]
+        board.positions[move] = str(move)
+        if value < best[0]:
+          best = (value, move)
+      return best
 
 ################################# BOARD CLASS #################################
 class Board (object):
@@ -130,7 +162,7 @@ class Board (object):
     print " "
     for i in range(7, 10):
       sys.stdout.write( "%s " % self.positions[i])
-    print " " 
+    print "\n" 
    
   # allows player to make a move
   def players_move(self):
@@ -146,7 +178,7 @@ class Board (object):
       sys.exit(0)
 
     print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
-    move = raw_input("Make your move, Player: ")
+    move = raw_input("\nMake your move, Player: ")
     
     #check that the input is a digit
     if move.isdigit() == False:
@@ -164,11 +196,12 @@ class Board (object):
       print "This is not a valid move. Please choose again."
       self.players_move()
     else:
-      print "You entered", move
+      print "\nYou entered", move
       self.positions[int(move)] = self.player
       self.to_string()
       print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
       print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
+      print ""
       self.opponents_move()
 
   # uses Minimax algorithm to make an opponents' move
@@ -177,37 +210,20 @@ class Board (object):
     if HelperFunctions.winning_configuration(HelperFunctions(), self, self.player) != None:
       print "Player has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.player)
       sys.exit(0)
-    if HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
+    elif HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent) != None:
       print "Opponent has won the game with configuration ", HelperFunctions.winning_configuration(HelperFunctions(), self, self.opponent)
       sys.exit(0)
-    if HelperFunctions.is_tied(HelperFunctions(), self):
+    elif HelperFunctions.is_tied(HelperFunctions(), self):
       print "The game is tied!"
       sys.exit(0)
-
-    print "The current open positions are: ", HelperFunctions.get_open_positions(HelperFunctions(), self)
-    move = raw_input("Make your move, Opponent (AI): ")
-    
-    #check that the input is a digit
-    if move.isdigit() == False:
-      print "You did not enter a valid number.  Please try again."
-      self.opponents_move()
-    # if input isn't on the board
-    elif int(move) not in self.positions.keys():
-      print "Your input does not exist on the board.  Please try again."
-      self.opponents_move()
-    # if spot is already taken
-    elif HelperFunctions.is_taken(HelperFunctions(),self,move):
-      print "This position is already taken. Choose a different move."
-      self.opponents_move()
-    elif HelperFunctions.is_valid_input(HelperFunctions(), board, int(move)) == False:
-      print "This is not a valid move. Please choose again."
-      self.opponents_move()
     else:
-      print "You entered", move
-      self.positions[int(move)] = self.opponent
+      optimalmove = HelperFunctions.minimax(HelperFunctions(), self, self.opponent)[1]
+      print "Opponent chooses: ", optimalmove
+      self.positions[optimalmove] = self.opponent
       self.to_string()
       print "Player now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.player)
       print "Opponent now occupies spaces: ", HelperFunctions.get_positions_of(HelperFunctions(), self, self.opponent)
+      print ""
       self.players_move()
     
 ################################# SCRIPT #################################    
