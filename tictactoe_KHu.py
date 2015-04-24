@@ -123,7 +123,7 @@ class HelperFunctions(object):
           best = (value, move)
       return best
     else:
-      best = (+1000, None)
+      best = (1000, None)
       for move in self.get_open_positions(board):
         board.positions[move] = player
         value = self.minimax(board, self.get_enemy_of(player))[0]
