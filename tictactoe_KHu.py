@@ -47,7 +47,7 @@ class HelperFunctions(object):
     elif board.positions[3] == player and board.positions[3] == board.positions[6] and board.positions[6] == board.positions[9]:
       return [3, 6, 9]
     # diagonal
-    if board.positions[1] == player and board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
+    elif board.positions[1] == player and board.positions[1] == board.positions[5] and board.positions[5] == board.positions[9]:
       return [1, 5, 9]
     # other diagonal
     elif board.positions[3] == player and board.positions[3] == board.positions[5] and board.positions[5] == board.positions[7]:
@@ -109,12 +109,12 @@ class HelperFunctions(object):
     if self.is_complete(board): # if game is complete,
       if self.won_by(board, board.player):
         return (-1, None)
-      elif self.won_by(board, self.get_enemy_of(board.player)):
-        return (1, None)
       elif self.is_tied(board):
         return (0, None)
+      elif self.won_by(board, board.opponent):
+        return (+1, None)
     elif player == board.player:
-      best = (-2, None)
+      best = (-1000, None)
       for move in self.get_open_positions(board):
         board.positions[move] = player
         value = self.minimax(board, self.get_enemy_of(player))[0]
@@ -123,7 +123,7 @@ class HelperFunctions(object):
           best = (value, move)
       return best
     else:
-      best = (2, None)
+      best = (+1000, None)
       for move in self.get_open_positions(board):
         board.positions[move] = player
         value = self.minimax(board, self.get_enemy_of(player))[0]
