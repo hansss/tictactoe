@@ -12,6 +12,9 @@ class HelperFunctions(object):
     else: 
       return False 
 
+  #create new board to determine mini-max optimization 
+  x = Board()
+
   #checks to see if the board is filled and hence the game is over
   def board_filled(self, board):
     if self.get_open_positions(board) == []:
@@ -26,7 +29,7 @@ class HelperFunctions(object):
       return "X"
 
    #overall score board
-   def score_board(self, board, spot):
+  def score_board(self, board, spot):
     if self.board_filled(board):
       if self.won_by(board, board.player):
         return -1
@@ -37,15 +40,12 @@ class HelperFunctions(object):
     else: None
       
    def choose_ideal_square(self, board , move):
-   
-   
-
-    op = self.get_open_positions(board)
-    for spot in op:
+    if board_filled == false 
+      for i in len(self.get_open_positions(board))
+        x.positions[i] = player
+        switch_players(player)
+        choose_ideal_square(self, x, move)
       
-
-
-
 
       
   # checks to see if a character is a number between 1 and board.size*board.size
