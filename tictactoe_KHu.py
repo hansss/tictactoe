@@ -107,11 +107,11 @@ class HelperFunctions(object):
   # the best possible next move given a board and a player.  
   def minimax(self, board, player):
     if self.is_complete(board): # if game is complete,
-      if self.won_by(board, board.player):
+      if self.won_by(board, board.opponent):
         return (-1, None)
       elif self.is_tied(board):
         return (0, None)
-      elif self.won_by(board, board.opponent):
+      elif self.won_by(board, board.player):
         return (+1, None)
     elif player == board.player:
       best = (-1000, None)
