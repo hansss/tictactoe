@@ -75,8 +75,7 @@ class HelperFunctions(object):
       all_moves.append(0)
     self.__minimax(board, player, depth, all_moves)
     best_pos = max(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
-    if(depth == 1): # FOR DEBUGGING PURPOSES: PLEASE REMOVE WHEN DONE
-        print all_moves
+    print all_moves
     return (all_moves[best_pos - 1], best_pos)
 
   def __minimax(self, board, player, depth, all_moves):
