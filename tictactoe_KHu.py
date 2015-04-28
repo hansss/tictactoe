@@ -213,36 +213,36 @@ class TicTacToeBoard (object):
     elif self.positions[7] == self.opponent and self.positions[7] == self.positions[8] and self.positions[9] == "9":
       return 9
     # vertical
-    elif self.positions[1] == self.positions[4] == self.opponent:
+    elif self.positions[1] == self.opponent and self.positions[1] == self.positions[4] and self.positions[7] == "7":
       return 7
-    elif self.positions[1] == self.positions[7] == self.opponent:
+    elif self.positions[1] == self.opponent and self.positions[1] == self.positions[7] and self.positions[4] == "4":
       return 4
-    elif self.positions[4] == self.positions[7] == self.opponent:
+    elif self.positions[4] == self.opponent and self.positions[4] == self.positions[7] and self.positions[1] == "1":
       return 1
-    elif self.positions[2] == self.positions[5] == self.opponent:
+    elif self.positions[2] == self.opponent and self.positions[2] == self.positions[5] and self.positions[8] == "8":
       return 8
-    elif self.positions[2] == self.positions[8] == self.opponent:
+    elif self.positions[2] == self.opponent and self.positions[2] == self.positions[8] and self.positions[5] == "5":
       return 5
-    elif self.positions[5] == self.positions[8] == self.opponent:
+    elif self.positions[5] == self.opponent and self.positions[5] == self.positions[8] and self.positions[2] == "2":
       return 2
-    elif self.positions[3] == self.positions[6] == self.opponent:
+    elif self.positions[3] == self.opponent and self.positions[3] == self.positions[6] and self.positions[9] == "9":
       return 9
-    elif self.positions[3] == self.positions[9] == self.opponent:
+    elif self.positions[3] == self.opponent and self.positions[3] == self.positions[9] and self.positions[6] == "6":
       return 6
-    elif self.positions[6] == self.positions[9] == self.opponent:
+    elif self.positions[6] == self.opponent and self.positions[6] == self.positions[9] and self.positions[3] == "3":
       return 3
-  # diagonals
-    elif self.positions[1] == self.positions[9] and self.positions[1] == self.opponent :
+    # diagonals
+    elif self.positions[1] == self.positions[9] and self.positions[1] == self.opponent and self.positions[5] == "5":
       return 5
-    elif self.positions[1] == self.positions[5] and self.positions[1] == self.opponent :
+    elif self.positions[1] == self.positions[5] and self.positions[1] == self.opponent and self.positions[9] == "9":
       return 9
-    elif self.positions[5] == self.positions[9] and self.positions[1] == self.opponent :
+    elif self.positions[5] == self.positions[9] and self.positions[1] == self.opponent and self.positions[9] == "1":
       return 1
-    elif self.positions[3] == self.positions[5] and self.positions[3] == self.opponent :
+    elif self.positions[3] == self.positions[5] and self.positions[3] == self.opponent and self.positions[9] == "7":
       return 7
-    elif self.positions[3] == self.positions[7] and self.positions[3] == self.opponent :
+    elif self.positions[3] == self.positions[7] and self.positions[3] == self.opponent and self.positions[9] == "5":
       return 5
-    elif self.positions[5] == self.positions[7] and self.positions[5] == self.opponent :
+    elif self.positions[5] == self.positions[7] and self.positions[5] == self.opponent and self.positions[9] == "3":
       return 3
     else:
       return None
