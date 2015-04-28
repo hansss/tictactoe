@@ -217,13 +217,6 @@ class TicTacToeBoard (object):
       if self.positions[i] != self.player and self.positions[i] != self.opponent:
         not_spaces.append(int(self.positions[i]))
     return not_spaces
-
-  # returns True if the game has been completed (all spots filled)
-  def is_complete(self):
-    if len(self.get_open_positions()) == 0:
-      return True
-    else:
-      return False
     
 ################################# SCRIPT #################################    
 
