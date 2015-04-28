@@ -24,18 +24,18 @@ class HelperFunctions(object):
     #check that the input is a digit (go in helper)
     if move.isdigit() == False:
       print "You did not enter a valid number.  Please try again."
-      self.players_move()
+      self.players_move(board)
     # if input isn't on the board
     elif int(move) not in board.positions.keys():
       print "Your input does not exist on the board.  Please try again."
-      self.players_move()
+      self.players_move(board)
     # if spot is already taken
     elif board.is_taken(move):
       print "This position is already taken. Choose a different move."
-      self.players_move()
+      self.players_move(board)
     elif board.is_valid_input(int(move)) == False:
       print "This is not a valid move. Please choose again."
-      self.players_move()
+      self.players_move(board)
     else:
       print "\nYou entered", move
       board.make_move(int(move), board.player)
@@ -61,11 +61,11 @@ class HelperFunctions(object):
       if(len(board.get_positions_of(board.player)) == 1): # if player just finished his/her first move
         players_first_move = board.get_positions_of(board.player)[0] # find out where player went
         data = open('minimaxdata.txt') # load minimax arrays
-        minimaxdata = data.read();
+        minimaxdata = data.read()
         print minimaxdata
         all_moves_array = minimaxdata[players_first_move] # find the array corresponding to player's first move
         print all_moves_array
-        # optimalmove = max(all_moves_array, key=lambda x: all_moves_array[x - 1]);
+        optimalmove = max(all_moves_array, key=lambda x: all_moves_array[x - 1]);
       else:
         optimalmove = self.minimax(board, board.opponent, 2)[1]
       print "Opponent chooses: ", optimalmove
@@ -90,11 +90,11 @@ class HelperFunctions(object):
 
   def __minimax(self, board, player, depth, all_moves):
     if board.won_by(board.opponent):
-      return (-depth, None)
+      return -depth
     elif board.is_tied():
-      return (0, None)
+      return 0
     elif board.won_by(board.player):
-      return (depth, None)
+      return depth
     else:
       for move in board.get_open_positions():
         board.make_move(int(move), player)
@@ -102,7 +102,7 @@ class HelperFunctions(object):
         if score != None:
           all_moves[move - 1] += score
         board.make_move(int(move), str(move))
-      return (None, None)
+      return None
 
 ################################# BOARD CLASS #################################
 

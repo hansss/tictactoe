@@ -81,19 +81,19 @@ class HelperFunctions(object):
 
   def __minimax(self, board, player, depth, all_moves):
     if board.won_by(board.opponent):
-      return (-depth, None)
+      return -depth
     elif board.is_tied():
-      return (0, None)
+      return 0
     elif board.won_by(board.player):
-      return (depth, None)
+      return depth
     else:
       for move in board.get_open_positions():
         board.make_move(int(move), player)
-        score, pos = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
+        score = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
         if score != None:
           all_moves[move - 1] += score
         board.make_move(int(move), str(move))
-      return (None, None)
+      return None
 
 ################################# BOARD CLASS #################################
 
