@@ -38,7 +38,7 @@ class HelperFunctions(object):
       self.players_move()
     else:
       print "\nYou entered", move
-      board.positions[int(move)] = board.player
+      board.make_move(int(move), board.player)
       board.to_string()
       print "Player now occupies spaces: ", board.get_positions_of(board.player)
       print "Opponent now occupies spaces: ", board.get_positions_of(board.opponent)
@@ -60,7 +60,7 @@ class HelperFunctions(object):
     else:
       optimalmove = self.minimax(board, board.opponent, 1)[1]
       print "Opponent chooses: ", optimalmove
-      board.positions[optimalmove] = board.opponent
+      board.make_move(int(optimalmove), board.opponent)
       board.to_string()
       print "Player now occupies spaces: ", board.get_positions_of(board.player)
       print "Opponent now occupies spaces: ", board.get_positions_of(board.opponent)
@@ -88,11 +88,11 @@ class HelperFunctions(object):
       return (depth, None)
     else:
       for move in board.get_open_positions():
-        board.positions[move] = player
+        board.make_move(int(move), player)
         score, pos = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
         if score != None:
           all_moves[move - 1] += score
-        board.positions[move] = str(move)
+        board.make_move(int(move), str(move))
       return (None, None)
 
 ################################# BOARD CLASS #################################
@@ -112,6 +112,9 @@ class TicTacToeBoard (object):
         7: "7", 
         8: "8", 
         9: "9"}
+
+  def make_move(self, move, player):
+    self.positions[move] = player
        
   # returns string representation of Board     
   def to_string(self):
