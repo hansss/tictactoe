@@ -80,13 +80,12 @@ class HelperFunctions(object):
     return (all_moves[best_pos - 1], best_pos)
 
   def __minimax(self, board, player, depth, all_moves):
-    if board.is_complete(): # if game is complete,
-      if board.won_by(board.opponent):
-        return (-depth, None)
-      elif board.is_tied():
-        return (0, None)
-      else:
-        return (depth, None)
+    if board.won_by(board.opponent):
+      return (-depth, None)
+    elif board.is_tied():
+      return (0, None)
+    elif board.won_by(board.player):
+      return (depth, None)
     else:
       for move in board.get_open_positions():
         board.positions[move] = player
