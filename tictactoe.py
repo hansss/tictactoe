@@ -74,18 +74,18 @@ class HelperFunctions(object):
     for i in range (1, 10):
       all_moves.append(0)
     self.__minimax(board, player, depth, all_moves)
-    best_pos = max(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
+    best_pos = min(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
     if(depth == 1): # FOR DEBUGGING PURPOSES: PLEASE REMOVE WHEN DONE
         print all_moves
     return (all_moves[best_pos - 1], best_pos)
 
   def __minimax(self, board, player, depth, all_moves):
     if board.won_by(board.opponent):
-      return -depth
+      return -1/depth
     elif board.is_tied():
       return 0
     elif board.won_by(board.player):
-      return depth
+      return 1/depth
     else:
       for move in board.get_open_positions():
         board.make_move(int(move), player)
