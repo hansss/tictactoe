@@ -60,12 +60,13 @@ class HelperFunctions(object):
     else:
       if(len(board.get_positions_of(board.player)) == 1): # if player just finished his/her first move
         players_first_move = board.get_positions_of(board.player)[0] # find out where player went
-        data = open('minimaxdata.txt') # load minimax arrays
-        minimaxdata = data.read()
-        print minimaxdata
-        all_moves_array = minimaxdata[players_first_move] # find the array corresponding to player's first move
+        file = open('minimaxdata.txt', 'rb') # load minimax arrays
+        minimaxdata = [row.strip().split('\t') for row in file]
+        all_moves_array = minimaxdata[players_first_move-1] # find the array corresponding to player's first move
+        all_moves_array = [int(numeric_string) for numeric_string in all_moves_array]
         print all_moves_array
-        optimalmove = max(all_moves_array, key=lambda x: all_moves_array[x - 1]);
+        print all_moves_array.index(max(all_moves_array))+1
+        optimalmove = all_moves_array.index(max(all_moves_array))+1
       else:
         optimalmove = self.minimax(board, board.opponent, 2)[1]
       print "Opponent chooses: ", optimalmove
@@ -84,7 +85,7 @@ class HelperFunctions(object):
       all_moves.append(0)
     self.__minimax(board, player, depth, all_moves)
     best_pos = max(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
-    if(depth == 1): # FOR DEBUGGING PURPOSES: PLEASE REMOVE WHEN DONE
+    if(depth == 2): # FOR DEBUGGING PURPOSES: PLEASE REMOVE WHEN DONE
         print all_moves
     return (all_moves[best_pos - 1], best_pos)
 
@@ -98,7 +99,7 @@ class HelperFunctions(object):
     else:
       for move in board.get_open_positions():
         board.make_move(int(move), player)
-        score, pos = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
+        score = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
         if score != None:
           all_moves[move - 1] += score
         board.make_move(int(move), str(move))
