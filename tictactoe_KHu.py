@@ -58,9 +58,13 @@ class HelperFunctions(object):
       print "The game is tied!"
       sys.exit(0)
     else:
-      optimalmove = self.minimax(board, board.opponent, 1)[1]
-      print "Opponent chooses: ", optimalmove
-      board.make_move(int(optimalmove), board.opponent)
+      if board.is_about_to_win() != None:
+        print "Opponent chooses: ", board.is_about_to_win()
+        board.make_move(int(board.is_about_to_win()), board.opponent)
+      else:
+        optimalmove = self.minimax(board, board.opponent, 1)[1]
+        print "Opponent chooses: ", optimalmove
+        board.make_move(int(optimalmove), board.opponent)
       board.to_string()
       print "Player now occupies spaces: ", board.get_positions_of(board.player)
       print "Opponent now occupies spaces: ", board.get_positions_of(board.opponent)
@@ -184,6 +188,62 @@ class TicTacToeBoard (object):
     elif self.positions[3] == player and self.positions[3] == self.positions[5] and self.positions[5] == self.positions[7]:
       return [3, 5, 7]
     # if no wins
+    else:
+      return None
+
+  # returns the winning move if player is about to win
+  def is_about_to_win(self):
+    # horizontal
+    if self.positions[2] == self.opponent and self.positions[2] == self.positions[3] and self.positions[1] == "1":
+      return 1
+    elif self.positions[1] == self.opponent and self.positions[1] == self.positions[3] and self.positions[2] == "2":
+      return 2
+    elif self.positions[1] == self.opponent and self.positions[1] == self.positions[2] and self.positions[3] == "3":
+      return 3
+    elif self.positions[5] == self.opponent and self.positions[5] == self.positions[6] and self.positions[4] == "4":
+      return 4
+    elif self.positions[4] == self.opponent and self.positions[4] == self.positions[6] and self.positions[5] == "5":
+      return 5
+    elif self.positions[4] == self.opponent and self.positions[4] == self.positions[5] and self.positions[6] == "6":
+      return 6
+    elif self.positions[8] == self.opponent and self.positions[8] == self.positions[9] and self.positions[7] == "7":
+      return 7
+    elif self.positions[7] == self.opponent and self.positions[7] == self.positions[9] and self.positions[8] == "8":
+      return 8
+    elif self.positions[7] == self.opponent and self.positions[7] == self.positions[8] and self.positions[9] == "9":
+      return 9
+    # vertical
+    elif self.positions[1] == self.positions[4] == self.opponent:
+      return 7
+    elif self.positions[1] == self.positions[7] == self.opponent:
+      return 4
+    elif self.positions[4] == self.positions[7] == self.opponent:
+      return 1
+    elif self.positions[2] == self.positions[5] == self.opponent:
+      return 8
+    elif self.positions[2] == self.positions[8] == self.opponent:
+      return 5
+    elif self.positions[5] == self.positions[8] == self.opponent:
+      return 2
+    elif self.positions[3] == self.positions[6] == self.opponent:
+      return 9
+    elif self.positions[3] == self.positions[9] == self.opponent:
+      return 6
+    elif self.positions[6] == self.positions[9] == self.opponent:
+      return 3
+  # diagonals
+    elif self.positions[1] == self.positions[9] and self.positions[1] == self.opponent :
+      return 5
+    elif self.positions[1] == self.positions[5] and self.positions[1] == self.opponent :
+      return 9
+    elif self.positions[5] == self.positions[9] and self.positions[1] == self.opponent :
+      return 1
+    elif self.positions[3] == self.positions[5] and self.positions[3] == self.opponent :
+      return 7
+    elif self.positions[3] == self.positions[7] and self.positions[3] == self.opponent :
+      return 5
+    elif self.positions[5] == self.positions[7] and self.positions[5] == self.opponent :
+      return 3
     else:
       return None
 
