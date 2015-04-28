@@ -58,7 +58,16 @@ class HelperFunctions(object):
       print "The game is tied!"
       sys.exit(0)
     else:
-      optimalmove = self.minimax(board, board.opponent, 1)[1]
+      if(len(board.get_positions_of(board.player)) == 1): # if player just finished his/her first move
+        players_first_move = board.get_positions_of(board.player)[0] # find out where player went
+        data = open('minimaxdata.txt') # load minimax arrays
+        minimaxdata = data.read();
+        print minimaxdata
+        all_moves_array = minimaxdata[players_first_move] # find the array corresponding to player's first move
+        print all_moves_array
+        # optimalmove = max(all_moves_array, key=lambda x: all_moves_array[x - 1]);
+      else:
+        optimalmove = self.minimax(board, board.opponent, 2)[1]
       print "Opponent chooses: ", optimalmove
       board.make_move(int(optimalmove), board.opponent)
       board.to_string()
