@@ -60,7 +60,7 @@ class HelperFunctions(object):
     else:
       if len(board.get_positions_of(board.player)) == 1: # if first turn, load data
         players_first_move = board.get_positions_of(board.player)[0] # find out where player went
-        file = open('minimaxdata.txt', 'rb') # load minimax arrays
+        file = open('../data/minimaxdata.txt', 'rb') # load minimax arrays
         minimaxdata = [row.strip().split('\t') for row in file]
         all_moves_array = minimaxdata[players_first_move-1] # find the array corresponding to player's first move
         all_moves_array = [int(numeric_string) for numeric_string in all_moves_array]
