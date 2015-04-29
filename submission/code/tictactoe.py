@@ -75,6 +75,9 @@ class HelperFunctions(object):
       elif (len(board.get_positions_of(board.player)) == 2 and ((1 in board.get_positions_of(board.player) and 9 in board.get_positions_of(board.player)) or (3 in board.get_positions_of(board.player) and 7 in board.get_positions_of(board.player)))):
         print "Opponent chooses: 2"
         board.make_move(2, board.opponent) #block
+      elif (len(board.get_positions_of(board.player)) == 2 and ((5 in board.get_positions_of(board.player) and 9 in board.get_positions_of(board.player)))):
+        print "Opponent chooses: 3"
+        board.make_move(3, board.opponent) #anticipate block
       else:
         optimalmove = self.minimax(board, board.opponent, 2)[1]
         print "Opponent chooses: ", optimalmove
