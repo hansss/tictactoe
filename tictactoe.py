@@ -58,7 +58,7 @@ class HelperFunctions(object):
       print "The game is tied!"
       sys.exit(0)
     else:
-      if len(board.get_positions_of(board.player)) == 1:
+      if len(board.get_positions_of(board.player)) == 1: # if first turn, load data
         players_first_move = board.get_positions_of(board.player)[0] # find out where player went
         file = open('minimaxdata.txt', 'rb') # load minimax arrays
         minimaxdata = [row.strip().split('\t') for row in file]
@@ -72,6 +72,9 @@ class HelperFunctions(object):
       elif board.is_about_to_win(board.player) != None:
         print "Opponent chooses: ", board.is_about_to_win(board.player)
         board.make_move(int(board.is_about_to_win(board.player)), board.opponent) #block
+      elif (len(board.get_positions_of(board.player)) == 2 and ((1 in board.get_positions_of(board.player) and 9 in board.get_positions_of(board.player)) or (3 in board.get_positions_of(board.player) and 7 in board.get_positions_of(board.player)))):
+        print "Opponent chooses: 2"
+        board.make_move(2, board.opponent) #block
       else:
         optimalmove = self.minimax(board, board.opponent, 2)[1]
         print "Opponent chooses: ", optimalmove
