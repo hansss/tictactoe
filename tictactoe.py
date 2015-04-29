@@ -24,18 +24,18 @@ class HelperFunctions(object):
     #check that the input is a digit (go in helper)
     if move.isdigit() == False:
       print "You did not enter a valid number.  Please try again."
-      self.players_move()
+      self.players_move(board)
     # if input isn't on the board
     elif int(move) not in board.positions.keys():
       print "Your input does not exist on the board.  Please try again."
-      self.players_move()
+      self.players_move(board)
     # if spot is already taken
     elif board.is_taken(move):
       print "This position is already taken. Choose a different move."
       self.players_move()
     elif board.is_valid_input(int(move)) == False:
       print "This is not a valid move. Please choose again."
-      self.players_move()
+      self.players_move(board)
     else:
       print "\nYou entered", move
       board.make_move(int(move), board.player)
@@ -58,9 +58,24 @@ class HelperFunctions(object):
       print "The game is tied!"
       sys.exit(0)
     else:
-      optimalmove = self.minimax(board, board.opponent, 1)[1]
-      print "Opponent chooses: ", optimalmove
-      board.make_move(int(optimalmove), board.opponent)
+      if len(board.get_positions_of(board.player)) == 1:
+        players_first_move = board.get_positions_of(board.player)[0] # find out where player went
+        file = open('minimaxdata.txt', 'rb') # load minimax arrays
+        minimaxdata = [row.strip().split('\t') for row in file]
+        all_moves_array = minimaxdata[players_first_move-1] # find the array corresponding to player's first move
+        all_moves_array = [int(numeric_string) for numeric_string in all_moves_array]
+        optimalmove = all_moves_array.index(max(all_moves_array))+1
+        board.make_move(int(optimalmove), board.opponent)
+      elif board.is_about_to_win(board.opponent) != None:
+        print "Opponent chooses: ", board.is_about_to_win(board.opponent)
+        board.make_move(int(board.is_about_to_win(board.opponent)), board.opponent) #win
+      elif board.is_about_to_win(board.player) != None:
+        print "Opponent chooses: ", board.is_about_to_win(board.player)
+        board.make_move(int(board.is_about_to_win(board.player)), board.opponent) #block
+      else:
+        optimalmove = self.minimax(board, board.opponent, 2)[1]
+        print "Opponent chooses: ", optimalmove
+        board.make_move(int(optimalmove), board.opponent)
       board.to_string()
       print "Player now occupies spaces: ", board.get_positions_of(board.player)
       print "Opponent now occupies spaces: ", board.get_positions_of(board.opponent)
@@ -74,26 +89,38 @@ class HelperFunctions(object):
     for i in range (1, 10):
       all_moves.append(0)
     self.__minimax(board, player, depth, all_moves)
-    best_pos = min(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
-    if(depth == 1): # FOR DEBUGGING PURPOSES: PLEASE REMOVE WHEN DONE
-        print all_moves
+    best_pos = -999;
+    if player == board.player:
+      print "Player's Turn, choose smallest:"
+      best_pos = min(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
+    else:
+      print "Opponent's Turn, choose largest:"
+      best_pos = max(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
+    print all_moves
     return (all_moves[best_pos - 1], best_pos)
 
   def __minimax(self, board, player, depth, all_moves):
     if board.won_by(board.opponent):
-      return -1/depth
+      return -depth
     elif board.is_tied():
       return 0
     elif board.won_by(board.player):
-      return 1/depth
+      return depth
     else:
+      best = None
       for move in board.get_open_positions():
         board.make_move(int(move), player)
         score = self.__minimax(board, board.get_enemy_of(player), depth + 1, all_moves)
         if score != None:
           all_moves[move - 1] += score
         board.make_move(int(move), str(move))
-      return None
+        if player == board.player:
+          if score < best:
+            best = score
+        else:
+          if score > best:
+            best = score
+      return best
 
 ################################# BOARD CLASS #################################
 
@@ -178,6 +205,62 @@ class TicTacToeBoard (object):
     elif self.positions[3] == player and self.positions[3] == self.positions[5] and self.positions[5] == self.positions[7]:
       return [3, 5, 7]
     # if no wins
+    else:
+      return None
+
+  # returns the winning move if player is about to win
+  def is_about_to_win(self, player):
+    # horizontal
+    if self.positions[2] == player and self.positions[2] == self.positions[3] and self.positions[1] == "1":
+      return 1
+    elif self.positions[1] == player and self.positions[1] == self.positions[3] and self.positions[2] == "2":
+      return 2
+    elif self.positions[1] == player and self.positions[1] == self.positions[2] and self.positions[3] == "3":
+      return 3
+    elif self.positions[5] == player and self.positions[5] == self.positions[6] and self.positions[4] == "4":
+      return 4
+    elif self.positions[4] == player and self.positions[4] == self.positions[6] and self.positions[5] == "5":
+      return 5
+    elif self.positions[4] == player and self.positions[4] == self.positions[5] and self.positions[6] == "6":
+      return 6
+    elif self.positions[8] == player and self.positions[8] == self.positions[9] and self.positions[7] == "7":
+      return 7
+    elif self.positions[7] == player and self.positions[7] == self.positions[9] and self.positions[8] == "8":
+      return 8
+    elif self.positions[7] == player and self.positions[7] == self.positions[8] and self.positions[9] == "9":
+      return 9
+    # vertical
+    elif self.positions[1] == player and self.positions[1] == self.positions[4] and self.positions[7] == "7":
+      return 7
+    elif self.positions[1] == player and self.positions[1] == self.positions[7] and self.positions[4] == "4":
+      return 4
+    elif self.positions[4] == player and self.positions[4] == self.positions[7] and self.positions[1] == "1":
+      return 1
+    elif self.positions[2] == player and self.positions[2] == self.positions[5] and self.positions[8] == "8":
+      return 8
+    elif self.positions[2] == player and self.positions[2] == self.positions[8] and self.positions[5] == "5":
+      return 5
+    elif self.positions[5] == player and self.positions[5] == self.positions[8] and self.positions[2] == "2":
+      return 2
+    elif self.positions[3] == player and self.positions[3] == self.positions[6] and self.positions[9] == "9":
+      return 9
+    elif self.positions[3] == player and self.positions[3] == self.positions[9] and self.positions[6] == "6":
+      return 6
+    elif self.positions[6] == player and self.positions[6] == self.positions[9] and self.positions[3] == "3":
+      return 3
+    # diagonals
+    elif self.positions[1] == self.positions[9] and self.positions[1] == player and self.positions[5] == "5":
+      return 5
+    elif self.positions[1] == self.positions[5] and self.positions[1] == player and self.positions[9] == "9":
+      return 9
+    elif self.positions[5] == self.positions[9] and self.positions[1] == player and self.positions[9] == "1":
+      return 1
+    elif self.positions[3] == self.positions[5] and self.positions[3] == player and self.positions[9] == "7":
+      return 7
+    elif self.positions[3] == self.positions[7] and self.positions[3] == player and self.positions[9] == "5":
+      return 5
+    elif self.positions[5] == self.positions[7] and self.positions[5] == player and self.positions[9] == "3":
+      return 3
     else:
       return None
 

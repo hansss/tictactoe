@@ -58,14 +58,22 @@ class HelperFunctions(object):
       print "The game is tied!"
       sys.exit(0)
     else:
-      if board.is_about_to_win(board.opponent) != None:
+      if len(board.get_positions_of(board.player)) == 1:
+        players_first_move = board.get_positions_of(board.player)[0] # find out where player went
+        file = open('minimaxdata.txt', 'rb') # load minimax arrays
+        minimaxdata = [row.strip().split('\t') for row in file]
+        all_moves_array = minimaxdata[players_first_move-1] # find the array corresponding to player's first move
+        all_moves_array = [int(numeric_string) for numeric_string in all_moves_array]
+        optimalmove = all_moves_array.index(max(all_moves_array))+1
+        board.make_move(int(optimalmove), board.opponent)
+      elif board.is_about_to_win(board.opponent) != None:
         print "Opponent chooses: ", board.is_about_to_win(board.opponent)
-        board.make_move(int(board.is_about_to_win(board.opponent)), board.opponent)
+        board.make_move(int(board.is_about_to_win(board.opponent)), board.opponent) #win
       elif board.is_about_to_win(board.player) != None:
         print "Opponent chooses: ", board.is_about_to_win(board.player)
-        board.make_move(int(board.is_about_to_win(board.player)), board.opponent)
+        board.make_move(int(board.is_about_to_win(board.player)), board.opponent) #block
       else:
-        optimalmove = self.minimax(board, board.opponent, 1)[1]
+        optimalmove = self.minimax(board, board.opponent, 2)[1]
         print "Opponent chooses: ", optimalmove
         board.make_move(int(optimalmove), board.opponent)
       board.to_string()
