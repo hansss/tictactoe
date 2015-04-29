@@ -94,12 +94,9 @@ class HelperFunctions(object):
     self.__minimax(board, player, depth, all_moves)
     best_pos = -999;
     if player == board.player:
-      print "Player's Turn, choose smallest:"
       best_pos = min(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
     else:
-      print "Opponent's Turn, choose largest:"
       best_pos = max(board.get_open_positions(), key=lambda x: all_moves[x - 1]);
-    print all_moves
     return (all_moves[best_pos - 1], best_pos)
 
   def __minimax(self, board, player, depth, all_moves):
