@@ -32,7 +32,7 @@ class HelperFunctions(object):
     # if spot is already taken
     elif board.is_taken(move):
       print "This position is already taken. Choose a different move."
-      self.players_move()
+      self.players_move(board)
     elif board.is_valid_input(int(move)) == False:
       print "This is not a valid move. Please choose again."
       self.players_move(board)
