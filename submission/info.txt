@@ -1,2 +1,0 @@
-title: The Unbeatable Tic-Tac-Toe: An Application of the Minimax Algorithm
-seas-username: hanakim, sxi, solis, kristinahu
